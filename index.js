@@ -1,12 +1,14 @@
 const listaTarefas = document.querySelector('#listaTarefas');
 const caixaTexto = document.querySelector('#caixaDeTexto');
 const botaoAdicionar = document.querySelector('#botaoAdicionar');
+const listaSuspensa = document.querySelector('#listaSuspensa')
 
 //LISTENER - SEMPRE QUE O BOTAO ADICIONAR FOR CLICADO ADICIONA UMA TAREFA NA LISTA
 botaoAdicionar.addEventListener('click', function () {
   const textoDaTarefa = caixaTexto.value;
   caixaTexto.value = '';
   listaTarefas.appendChild(adicionaTarefa(textoDaTarefa));
+  exibeOcultaListaSuspensa();
   caixaTexto.focus();
 });
 
@@ -46,9 +48,35 @@ function adicionaBotaoRemover() {
 
   botaoRemover.addEventListener('click', function() {
     listaTarefas.removeChild(this.parentNode);
+    exibeOcultaListaSuspensa();
   }
   )
     
 
   return botaoRemover;
 }
+function exibeOcultaListaSuspensa(){
+  const tarefa = document.querySelector('#tarefa');
+  if(elementoSPAN === null) {
+    listaSuspensa.setAttribute('hidden','hidden');
+
+  } else {
+    listaSuspensa.removeAttribute('hidden');
+  }
+}
+
+listaSuspensa.addEventListener('change', function(){
+  if(listaSuspensa.selectedIndex === 1 || listaSuspensa.selectedIndex ===2 ) {
+    const vetorTarefas = listaTarefas.querySelectorAll('#tarefa');
+    for(tarefa of vetorTarefas) {
+      tarefa.dispatchEvent(new Event('click'));
+    }
+
+  } else if(listaSuspensa.selectedIndex === 3 ) {
+    const vetorBotoes = listaTarefas.querySelectorAll('.remover');
+    for(botao of vetorBotoes) {
+      botao.dispatchEvent(new Event('click'));
+    }
+
+  }
+});
